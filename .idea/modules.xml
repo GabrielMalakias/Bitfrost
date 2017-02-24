@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bitfrost.iml" filepath="$PROJECT_DIR$/.idea/modules/bitfrost.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bitfrost_main.iml" filepath="$PROJECT_DIR$/.idea/modules/bitfrost_main.iml" group="bitfrost" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bitfrost_test.iml" filepath="$PROJECT_DIR$/.idea/modules/bitfrost_test.iml" group="bitfrost" />
+    </modules>
+  </component>
+</project>
