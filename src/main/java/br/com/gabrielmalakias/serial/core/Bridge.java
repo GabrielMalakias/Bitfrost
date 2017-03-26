@@ -1,6 +1,7 @@
 package br.com.gabrielmalakias.serial.core;
 
 import br.com.gabrielmalakias.serial.command.Read;
+import br.com.gabrielmalakias.serial.command.Write;
 import gnu.io.*;
 
 import java.io.IOException;
@@ -25,13 +26,13 @@ public class Bridge {
                 SerialPort serialPort = (SerialPort) commPort;
                 serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 
+                new Thread(new Write(serialPort.getOutputStream())).start();
                 new Thread(new Read(serialPort.getInputStream())).start();
             }
         }
     }
 
     public CommPortIdentifier getPortIdentifier(String portName) throws NoSuchPortException {
-        CommPortIdentifier.getPortIdentifiers();
         return CommPortIdentifier.getPortIdentifier(portName);
     }
 }
