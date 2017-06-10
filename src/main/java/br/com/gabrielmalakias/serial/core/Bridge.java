@@ -1,38 +1,32 @@
 package br.com.gabrielmalakias.serial.core;
 
-import br.com.gabrielmalakias.serial.command.Read;
-import br.com.gabrielmalakias.serial.command.Write;
 import gnu.io.*;
 
-import java.io.IOException;
+import java.util.Optional;
 
 public class Bridge {
-    private String portName;
+    private final SerialPort serialPort;
+    private static Optional<Bridge> instance;
 
-    public Bridge(String portName) throws NoSuchPortException {
-        this.portName = portName;
+    private Bridge(SerialPort serialPort) {
+        this.serialPort = serialPort;
     }
 
+    public SerialPort getSerialPort() {
+        return serialPort;
+    }
 
-    public void connect() throws NoSuchPortException, PortInUseException, UnsupportedCommOperationException, IOException {
-        CommPortIdentifier portIdentifier = getPortIdentifier(portName);
-
-        if (portIdentifier.isCurrentlyOwned()) {
-            System.out.print("Currently in use");
-        } else {
-            CommPort commPort = portIdentifier.open(this.getClass().getName(), 2000);
-
-            if (commPort instanceof SerialPort) {
-                SerialPort serialPort = (SerialPort) commPort;
-                serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-
-                new Thread(new Write(serialPort.getOutputStream())).start();
-                new Thread(new Read(serialPort.getInputStream())).start();
-            }
+    public static synchronized Optional<Bridge> getInstance() {
+        if(instance == null) {
+            SerialPortFactory factory = new SerialPortFactory();
+            instance = factory.build()
+                    .flatMap(s -> buildBridge(s));
         }
+
+        return instance;
     }
 
-    public CommPortIdentifier getPortIdentifier(String portName) throws NoSuchPortException {
-        return CommPortIdentifier.getPortIdentifier(portName);
+    private static Optional<Bridge> buildBridge(SerialPort serialPort) {
+        return Optional.ofNullable(new Bridge(serialPort));
     }
 }

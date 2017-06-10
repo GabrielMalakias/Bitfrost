@@ -5,17 +5,18 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 public class Write implements Runnable {
-    public final OutputStream output;
+    private final OutputStream output;
+    private final String message;
 
-    public Write(OutputStream output) {
+    public Write(OutputStream output, String message) {
         this.output = output;
+        this.message = message;
     }
 
     @Override
     public void run() {
         try {
-
-            this.output.write("name:temperature;value:24.44|name:luminosity;value:79|".getBytes(Charset.forName("UTF-8")));
+            this.output.write(message.getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
         }
