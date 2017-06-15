@@ -1,5 +1,6 @@
-#Bitfrost
+# Bitfrost
 
+```
  ▄▄▄▄   ██▄▄▄█████▓ ███████▀███  ▒█████   ██████▄▄▄█████▓
 ▓█████▄▓██▓  ██▒ ▓▓██   ▓██ ▒ ██▒██▒  ██▒██    ▒▓  ██▒ ▓▒
 ▒██▒ ▄█▒██▒ ▓██░ ▒▒████ ▓██ ░▄█ ▒██░  ██░ ▓██▄  ▒ ▓██░ ▒░
@@ -10,8 +11,9 @@
  ░    ░ ▒ ░ ░      ░ ░    ░░   ░░ ░ ░ ▒ ░  ░  ░   ░
  ░      ░                  ░        ░ ░       ░
       ░
+```
 
-> Bifrost is the rainbow bridge that connects Asgard, the world of the Aesir tribe of gods, with Midgard, the world of humanity
+> Bifrost is the rainbow bridge that connects Asgard, the world of the Aesir tribe of gods, with Midgard, the world of humanity - Norse-Mythology.org
 
 ## Overview
 Bitfrost(Bit + Bifrost) is responsible for connect Serial and MQTT publishing and subscribing some topics.
