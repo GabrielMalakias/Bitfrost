@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Factory {
-    @Bean
-    public MqttPahoClientFactory mqttPahoClientFactory() {
-        DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
-        factory.setServerURIs(Config.SERVER_URI);
-        return factory;
-    }
+//    @Bean
+//    public MqttPahoClientFactory mqttPahoClientFactory() {
+//        DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
+//        factory.setServerURIs(Config.SERVER_URI);
+//        return factory;
+//    }
 }

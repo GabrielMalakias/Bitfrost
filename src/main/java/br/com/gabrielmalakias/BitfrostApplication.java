@@ -1,12 +1,13 @@
 package br.com.gabrielmalakias;
-
-import br.com.gabrielmalakias.mqtt.OutputGateway;
 import br.com.gabrielmalakias.serial.command.Read;
 import br.com.gabrielmalakias.serial.command.Write;
 import br.com.gabrielmalakias.serial.core.Bridge;
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
 import gnu.io.UnsupportedCommOperationException;
+import org.eclipse.paho.client.mqttv3.IMqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -23,21 +24,24 @@ public class BitfrostApplication {
         ConfigurableApplicationContext ctx = new SpringApplicationBuilder(BitfrostApplication.class)
                 .web(false).run(args);
 
-        System.out.println("Started");
+        IMqttClient client = ctx.getBean(IMqttClient.class);
 
         Bridge.getInstance()
-            .map(b -> startSerialReaderProcess(b))
+            .map(b -> startSerialReaderProcess(b, client))
             .map(b -> startSerialWriterProcess(b));
 
-        OutputGateway.Gateway gateway =  ctx.getBean(OutputGateway.Gateway.class);
-        for (int i =0; i < 10000; i++) {
-            gateway.sendToMqtt("Hello Vodafone: " + i);
+        try {
+            client.connect();
+            client.publish("sensor/system", new MqttMessage("Hello from Bitfrost 1".getBytes()));
+
+        } catch (MqttException e) {
+            e.printStackTrace();
         }
     }
 
-    public static Bridge startSerialReaderProcess(Bridge bridge) {
+    public static Bridge startSerialReaderProcess(Bridge bridge, IMqttClient client) {
         try {
-            new Thread(new Read(bridge.getSerialPort().getInputStream())).start();
+            new Thread(new Read(bridge.getSerialPort().getInputStream(), client)).start();
             return bridge;
         } catch (IOException e) {
             e.printStackTrace();

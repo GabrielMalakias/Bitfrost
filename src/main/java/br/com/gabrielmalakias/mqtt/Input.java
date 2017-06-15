@@ -1,7 +1,10 @@
 package br.com.gabrielmalakias.mqtt;
 
+import br.com.gabrielmalakias.converter.MqttMessageToString;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.core.MessageProducer;
@@ -14,7 +17,6 @@ import org.springframework.messaging.MessageHandler;
 public class Input {
     private static String CLIENT_IDENTIFIER = "BITFROST_INPUT_CLIENT";
     private static String ACTUATOR_CHANNEL = "actuator/+/send";
-    private static String MESSAGE_CHANNEL_IDENTIFIER = "inputMessageChannel";
 
     @Bean
     public MessageChannel inputMessageChannel() {
