@@ -3,15 +3,21 @@ package br.com.gabrielmalakias.serial.core;
 import gnu.io.*;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Optional;
 
 public class Bridge {
     private final SerialPort serialPort;
     private static Optional<Bridge> instance;
+    private final InputStream inputStream;
+    private final OutputStream outputStream;
 
-    private Bridge(SerialPort serialPort) {
+
+    private Bridge(SerialPort serialPort, InputStream inputStream, OutputStream outputStream) {
         this.serialPort = serialPort;
+        this.inputStream = inputStream;
+        this.outputStream = outputStream;
     }
 
     public SerialPort getSerialPort() {
@@ -29,7 +35,7 @@ public class Bridge {
     }
 
     public boolean writeOnOutputStream(String message) {
-        return getOutputStream()
+        return Optional.ofNullable(getOutputStream())
                 .map(out -> write(out, message))
                 .orElse(false);
     }
@@ -44,15 +50,19 @@ public class Bridge {
         }
     }
 
-    private Optional<OutputStream> getOutputStream() {
-        try {
-            return Optional.ofNullable(this.getSerialPort().getOutputStream());
-        } catch (IOException e) {
-            return Optional.empty();
-        }
+    public OutputStream getOutputStream() {
+        return outputStream;
+    }
+
+    public InputStream getInputStream() {
+        return inputStream;
     }
 
     private static Optional<Bridge> buildBridge(SerialPort serialPort) {
-        return Optional.ofNullable(new Bridge(serialPort));
+        try {
+            return Optional.ofNullable(new Bridge(serialPort, serialPort.getInputStream(), serialPort.getOutputStream()));
+        } catch (IOException e) {
+            return Optional.empty();
+        }
     }
 }

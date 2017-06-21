@@ -8,10 +8,14 @@ import gnu.io.UnsupportedCommOperationException;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.integration.annotation.IntegrationComponentScan;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
@@ -20,6 +24,7 @@ import java.io.IOException;
 @SpringBootApplication
 @IntegrationComponentScan
 public class BitfrostApplication {
+
     public static void main(String[] args) throws NoSuchPortException, IOException, PortInUseException, UnsupportedCommOperationException {
         ConfigurableApplicationContext ctx = new SpringApplicationBuilder(BitfrostApplication.class)
                 .web(false).run(args);
@@ -27,8 +32,13 @@ public class BitfrostApplication {
         IMqttClient client = ctx.getBean(IMqttClient.class);
 
         Bridge.getInstance()
-            .map(b -> startSerialReaderProcess(b, client))
+//            .map(b -> startSerialReaderProcess(b, client))
             .map(b -> startSerialWriterProcess(b));
+
+
+        Process process = ctx.getBean(Process.class);
+        process.run();
+
 
         try {
             client.connect();
@@ -39,23 +49,27 @@ public class BitfrostApplication {
         }
     }
 
-    public static Bridge startSerialReaderProcess(Bridge bridge, IMqttClient client) {
-        try {
-            new Thread(new Read(bridge.getSerialPort().getInputStream(), client)).start();
-            return bridge;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+    @Service
+    class Process {
+        private final Read read;
+
+        @Autowired
+        Process(Read read) {
+            this.read = read;
+        }
+
+        public void run() {
+            startSerialRead();
+        }
+
+        @Async
+        public void startSerialRead() {
+            read.run();
         }
     }
 
     public static Bridge startSerialWriterProcess(Bridge bridge) {
-        try {
-            new Thread(new Write(bridge.getSerialPort().getOutputStream(), "Test Writable")).start();
-            return bridge;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        new Thread(new Write(bridge, "Test Writable")).start();
+        return bridge;
     }
 }

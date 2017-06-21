@@ -2,10 +2,12 @@ package br.com.gabrielmalakias.converter;
 
 import br.com.gabrielmalakias.mqtt.MqttMessage;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
 import static br.com.gabrielmalakias.util.Optional.optional;
 import static br.com.gabrielmalakias.util.String.EMPTY;
 
+@Component
 public class MqttMessageToString implements Converter<MqttMessage, String> {
     private StringBuilder builder;
 

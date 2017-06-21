@@ -2,9 +2,11 @@ package br.com.gabrielmalakias.converter;
 
 import br.com.gabrielmalakias.mqtt.OutputMessage;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
 
+@Component
 public class StringToOutputMessage implements Converter<String, OutputMessage> {
     private static String IDENTIFIER_TOKEN = "^(.*?(\bi\b)[^$]*)$";
     private static String VALUE_TOKEN = "^(.*?(\bv\b)[^$]*)$";

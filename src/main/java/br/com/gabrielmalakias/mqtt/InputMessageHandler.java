@@ -3,6 +3,7 @@ package br.com.gabrielmalakias.mqtt;
 import br.com.gabrielmalakias.converter.MqttMessageToString;
 import br.com.gabrielmalakias.serial.core.Bridge;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
@@ -11,7 +12,7 @@ import static br.com.gabrielmalakias.util.Optional.optional;
 
 public class InputMessageHandler implements MessageHandler {
     @Autowired
-    private MqttMessageToString converter;
+    private ConversionService converter;
 
     @Override
     public void handleMessage(Message<?> message) throws MessagingException {
@@ -33,6 +34,6 @@ public class InputMessageHandler implements MessageHandler {
     }
 
     private String toSerial(MqttMessage mqttMessage) {
-        return converter.convert(mqttMessage);
+        return converter.convert(mqttMessage, String.class);
     }
 }
