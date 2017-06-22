@@ -7,7 +7,7 @@ import java.util.Optional;
 import static br.com.gabrielmalakias.util.Optional.optional;
 
 public class SerialPortFactory {
-    private static String PORT_FILE_DESCRIPTOR = "/dev/tty000";
+    private static String PORT_FILE_DESCRIPTOR = "/dev/ttyS81";
     private static String COMM_PORT_IDENTIFIER = "BITFROST_BRIDGE_SERIAL";
 
     public Optional<SerialPort> build() {

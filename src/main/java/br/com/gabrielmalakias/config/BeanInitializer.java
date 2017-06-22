@@ -19,11 +19,6 @@ import java.util.Set;
 @Configuration
 public class BeanInitializer {
     @Bean
-    public MqttMessageToString mqttMessageToString() {
-        return new MqttMessageToString();
-    }
-
-    @Bean
     public MqttPahoClientFactory mqttPahoClientFactory() {
         DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
         factory.setServerURIs(Config.SERVER_URI);
@@ -38,7 +33,8 @@ public class BeanInitializer {
             return null;
         }
     }
-/*
+
+    /*
     @Bean
     public ConversionService conversionService() {
         ConversionServiceFactoryBean bean = new ConversionServiceFactoryBean();

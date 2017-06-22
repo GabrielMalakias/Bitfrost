@@ -1,22 +1,18 @@
 package br.com.gabrielmalakias.serial.command;
 
 import br.com.gabrielmalakias.serial.core.Bridge;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
-public class Write implements Runnable {
-    private final Bridge bridge;
-    private final String message;
+@Component
+public class Write {
 
-    public Write(Bridge bridge, String message) {
-        this.bridge = bridge;
-        this.message = message;
-    }
+    public void run(String message) {
+        Bridge bridge = Bridge.getInstance().get();
 
-    @Override
-    public void run() {
         try {
             bridge.getOutputStream().write(message.getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {

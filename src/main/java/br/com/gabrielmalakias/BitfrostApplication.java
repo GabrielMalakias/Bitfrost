@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -31,12 +31,14 @@ public class BitfrostApplication {
 
         IMqttClient client = ctx.getBean(IMqttClient.class);
 
-        Bridge.getInstance()
+//        Bridge.getInstance()
 //            .map(b -> startSerialReaderProcess(b, client))
-            .map(b -> startSerialWriterProcess(b));
+//            .map(b -> startSerialWriterProcess(b));
 
+        MqttToSerialProcess mqttToSerialProcess = ctx.getBean(MqttToSerialProcess.class);
+        mqttToSerialProcess.run();
 
-        Process process = ctx.getBean(Process.class);
+        SerialToMqttProcess process = ctx.getBean(SerialToMqttProcess.class);
         process.run();
 
 
@@ -50,26 +52,33 @@ public class BitfrostApplication {
     }
 
     @Service
-    class Process {
+    class SerialToMqttProcess {
         private final Read read;
 
         @Autowired
-        Process(Read read) {
+        SerialToMqttProcess(Read read) {
             this.read = read;
         }
 
-        public void run() {
-            startSerialRead();
-        }
-
         @Async
-        public void startSerialRead() {
+        public void run() {
             read.run();
         }
     }
 
-    public static Bridge startSerialWriterProcess(Bridge bridge) {
-        new Thread(new Write(bridge, "Test Writable")).start();
-        return bridge;
+    @Service
+    class MqttToSerialProcess {
+        private final Write write;
+
+        @Autowired
+        MqttToSerialProcess(Write write) {
+            this.write = write;
+        }
+
+        @Async
+        public void run() {
+            System.out.println("Its writing!!");
+            write.run("Its writing!!!");
+        }
     }
 }
