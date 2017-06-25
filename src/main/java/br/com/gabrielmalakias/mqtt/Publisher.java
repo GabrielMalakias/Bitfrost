@@ -1,31 +1,33 @@
 package br.com.gabrielmalakias.mqtt;
 
 import br.com.gabrielmalakias.converter.StringToOutputMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-public class Write {
+@Component
+public class Publisher {
     private final Client client;
 
-    public Write(Client client) {
+    @Autowired
+    public Publisher(Client client) {
         this.client = client;
     }
 
-    public void run(String message) {
-        Optional.ofNullable(message)
+    public boolean send(String message) {
+        return Optional.ofNullable(message)
                 .map(this::toOutputMessage)
-                .map(this::publish);
-
+                .map(this::publish)
+                .get();
     }
 
     private OutputMessage toOutputMessage(String message) {
         return new StringToOutputMessage().convert(message);
     }
 
-    private OutputMessage publish(OutputMessage outputMessage) {
+    private boolean publish(OutputMessage outputMessage) {
         String topic = outputMessage.getType() + "/" + outputMessage.getIdentifier();
-        client.publish(topic, outputMessage.getValue());
-        return outputMessage;
+        return client.publish(topic, outputMessage.getValue());
     }
-
 }

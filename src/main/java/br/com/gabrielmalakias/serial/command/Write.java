@@ -1,10 +1,9 @@
 package br.com.gabrielmalakias.serial.command;
 
-import br.com.gabrielmalakias.serial.core.Bridge;
+import br.com.gabrielmalakias.serial.Bridge;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 @Component

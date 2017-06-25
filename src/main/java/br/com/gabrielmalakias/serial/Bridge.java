@@ -1,13 +1,29 @@
-package br.com.gabrielmalakias.serial.core;
+package br.com.gabrielmalakias.serial;
 
-import gnu.io.*;
+import gnu.io.SerialPort;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Optional;
 
+@Component
+@Scope("singleton")
 public class Bridge {
+    private final SerialPort serialPort;
+    private final PortFactory factory;
+    private final InputStream inputStream;
+    private final OutputStream outputStream;
+
+    @Autowired
+    public Bridge(PortFactory factory) {
+        this.factory = factory;
+        this.serialPort = factory.build();
+    }
+
+   /*
     private final SerialPort serialPort;
     private static Optional<Bridge> instance;
     private final InputStream inputStream;
@@ -26,7 +42,7 @@ public class Bridge {
 
     public static synchronized Optional<Bridge> getInstance() {
         if(instance == null) {
-            SerialPortFactory factory = new SerialPortFactory();
+            PortFactory factory = new PortFactory(config);
             instance = factory.build()
                     .flatMap(s -> buildBridge(s));
         }
@@ -65,4 +81,5 @@ public class Bridge {
             return Optional.empty();
         }
     }
+    */
 }

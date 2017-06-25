@@ -1,0 +1,20 @@
+bitfrost:
+  serial:
+    port:
+      fileDescriptor: "/dev/ttyS81"
+      identifier: BITFROST_BRIDGE_SERIAL
+    message:
+      delimiter: %
+      separator: ;
+  incoming:
+     topic: actuator/+/send
+     identifier: BITFROST_INPUT_CLIENT
+  mqttConfiguration:
+    host: localhost
+    port: 1883
+    user:
+    password:
+    timeout: 3000
+    qos: 1
+logging:
+  file: bitfrost.log
