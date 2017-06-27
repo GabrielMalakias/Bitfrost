@@ -2,7 +2,7 @@ package br.com.gabrielmalakias.mqtt;
 
 import org.springframework.messaging.Message;
 
-import static br.com.gabrielmalakias.util.Optional.*;
+import static br.com.gabrielmalakias.util.Optional.optional;
 import static br.com.gabrielmalakias.util.String.EMPTY;
 
 public class MqttMessage {
@@ -27,9 +27,9 @@ public class MqttMessage {
     }
 
     public String getIdentifier() {
-       return optional(getInfoFromTopic(1))
-               .map(Object::toString)
-               .orElse(EMPTY);
+        return optional(getInfoFromTopic(1))
+                .map(Object::toString)
+                .orElse(EMPTY);
     }
 
     private String getInfoFromTopic(int index) {

@@ -3,9 +3,9 @@ package br.com.gabrielmalakias.serial;
 import br.com.gabrielmalakias.configuration.BitfrostConfiguration;
 import gnu.io.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 import static br.com.gabrielmalakias.util.Optional.optional;
 
@@ -18,6 +18,8 @@ public class PortFactory {
         this.config = config;
     }
 
+    @Bean
+    @Scope("singleton")
     public SerialPort build() {
         return optional(getPortIdentifier())
                 .map(pI -> portIsOwned((CommPortIdentifier) pI))
@@ -40,14 +42,14 @@ public class PortFactory {
 
     private CommPort getCommPort(CommPortIdentifier portIdentifier) {
         try {
-            return portIdentifier.open(config.getSerialConfiguration().getPortConfiguration().getIdentifier(), 2000);
+            return portIdentifier.open(config.getSerial().getPort().getIdentifier(), 2000);
         } catch (PortInUseException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private CommPortIdentifier portIsOwned (CommPortIdentifier portIdentifier) {
+    private CommPortIdentifier portIsOwned(CommPortIdentifier portIdentifier) {
         if (portIdentifier.isCurrentlyOwned()) {
             return null;
         } else {
@@ -57,7 +59,7 @@ public class PortFactory {
 
     private CommPortIdentifier getPortIdentifier() {
         try {
-            return CommPortIdentifier.getPortIdentifier(config.getSerialConfiguration().getPortConfiguration().getFileDescriptor());
+            return CommPortIdentifier.getPortIdentifier(config.getSerial().getPort().getFileDescriptor());
         } catch (NoSuchPortException e) {
             e.printStackTrace();
             return null;

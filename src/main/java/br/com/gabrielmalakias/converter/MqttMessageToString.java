@@ -18,7 +18,7 @@ public class MqttMessageToString implements Converter<MqttMessage, java.lang.Str
         builder = new StringBuilder();
 
         return optional(source)
-                .map(o -> (MqttMessage) o )
+                .map(o -> (MqttMessage) o)
                 .map(this::appendIdentifier)
                 .map(this::appendPayload)
                 .map(this::appendType)

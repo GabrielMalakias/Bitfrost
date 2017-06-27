@@ -9,14 +9,14 @@ public class SerialConfiguration {
     private MessageConfiguration message;
 
     @NestedConfigurationProperty
-    private PortConfiguration portConfiguration;
+    private PortConfiguration port;
 
-    public PortConfiguration getPortConfiguration() {
-        return portConfiguration;
+    public PortConfiguration getPort() {
+        return port;
     }
 
-    public void setPortConfiguration(PortConfiguration portConfiguration) {
-        this.portConfiguration = portConfiguration;
+    public void setPort(PortConfiguration portConfiguration) {
+        this.port = portConfiguration;
     }
 
     public MessageConfiguration getMessage() {

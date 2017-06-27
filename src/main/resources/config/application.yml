@@ -4,12 +4,12 @@ bitfrost:
       fileDescriptor: "/dev/ttyS81"
       identifier: BITFROST_BRIDGE_SERIAL
     message:
-      delimiter: %
-      separator: ;
+      delimiter: "%"
+      separator: ";"
   incoming:
      topic: actuator/+/send
      identifier: BITFROST_INPUT_CLIENT
-  mqttConfiguration:
+  mqtt:
     host: localhost
     port: 1883
     user:

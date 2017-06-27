@@ -30,7 +30,7 @@ public class Client {
     }
 
     private void start() {
-        if(!client.isConnected())
+        if (!client.isConnected())
             connect();
     }
 

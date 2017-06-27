@@ -1,7 +1,5 @@
 package br.com.gabrielmalakias.util;
 
-import br.com.gabrielmalakias.configuration.BitfrostConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.logging.Level;

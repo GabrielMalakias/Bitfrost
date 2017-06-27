@@ -1,7 +1,5 @@
 package br.com.gabrielmalakias.configuration;
 
-import org.springframework.integration.config.IntegrationConverter;
-
 public class MqttConfiguration {
     private String host;
     private Integer port;

@@ -17,11 +17,13 @@ import org.springframework.messaging.MessageHandler;
 public class InputConfiguration {
     private final BitfrostConfiguration config;
     private final MqttPahoClientFactory mqttFactory;
+    private final IncomingMessageHandler messageHandler;
 
     @Autowired
-    public InputConfiguration(BitfrostConfiguration config, MqttPahoClientFactory mqttFactory) {
+    public InputConfiguration(BitfrostConfiguration config, MqttPahoClientFactory mqttFactory, IncomingMessageHandler messageHandler) {
         this.config = config;
         this.mqttFactory = mqttFactory;
+        this.messageHandler = messageHandler;
     }
 
     @Bean
@@ -32,9 +34,9 @@ public class InputConfiguration {
     @Bean
     public MessageProducer inbound() {
         MqttPahoMessageDrivenChannelAdapter adapter = buildPahoDrivenChannelAdapter();
-        adapter.setCompletionTimeout(config.getMqttConfiguration().getTimeout());
+        adapter.setCompletionTimeout(config.getMqtt().getTimeout());
         adapter.setConverter(new DefaultPahoMessageConverter());
-        adapter.setQos(config.getMqttConfiguration().getQos());
+        adapter.setQos(config.getMqtt().getQos());
         adapter.setOutputChannel(inputMessageChannel());
         return adapter;
     }
@@ -42,12 +44,12 @@ public class InputConfiguration {
     @Bean
     @ServiceActivator(inputChannel = "inputMessageChannel")
     public MessageHandler inputHandler() {
-        return new IncomingMessageHandler();
+        return messageHandler;
     }
 
     private MqttPahoMessageDrivenChannelAdapter buildPahoDrivenChannelAdapter() {
-        return new MqttPahoMessageDrivenChannelAdapter(config.getIncomingConfiguration().getIdentifier(),
+        return new MqttPahoMessageDrivenChannelAdapter(config.getIncoming().getIdentifier(),
                 mqttFactory,
-                config.getIncomingConfiguration().getTopic());
+                config.getIncoming().getTopic());
     }
 }

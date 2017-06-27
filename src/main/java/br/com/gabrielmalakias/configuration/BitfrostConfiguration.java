@@ -1,6 +1,5 @@
 package br.com.gabrielmalakias.configuration;
 
-import br.com.gabrielmalakias.configuration.serial.MessageConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.stereotype.Component;
@@ -10,39 +9,39 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "bitfrost")
 public class BitfrostConfiguration {
     @NestedConfigurationProperty
-    private MqttConfiguration mqttConfiguration;
+    private MqttConfiguration mqtt;
 
     @NestedConfigurationProperty
-    private IncomingConfiguration incomingConfiguration;
+    private IncomingConfiguration incoming;
 
     @NestedConfigurationProperty
-    private SerialConfiguration serialConfiguration;
+    private SerialConfiguration serial;
 
-    public SerialConfiguration getSerialConfiguration() {
-        return serialConfiguration;
+    public SerialConfiguration getSerial() {
+        return serial;
     }
 
-    public void setSerialConfiguration(SerialConfiguration serialConfiguration) {
-        this.serialConfiguration = serialConfiguration;
+    public void setSerial(SerialConfiguration serialConfiguration) {
+        this.serial = serialConfiguration;
     }
 
     public String getMqttServerURI() {
-        return String.format("tcp://%s:%d", mqttConfiguration.getHost(), mqttConfiguration.getPort());
+        return String.format("tcp://%s:%d", mqtt.getHost(), mqtt.getPort());
     }
 
-    public IncomingConfiguration getIncomingConfiguration() {
-        return incomingConfiguration;
+    public IncomingConfiguration getIncoming() {
+        return incoming;
     }
 
-    public void setIncomingConfiguration(IncomingConfiguration incomingConfiguration) {
-        this.incomingConfiguration = incomingConfiguration;
+    public void setIncoming(IncomingConfiguration incomingConfiguration) {
+        this.incoming = incomingConfiguration;
     }
 
-    public MqttConfiguration getMqttConfiguration() {
-        return this.mqttConfiguration;
+    public MqttConfiguration getMqtt() {
+        return this.mqtt;
     }
 
-    public void setMqttConfiguration(MqttConfiguration mqttConfiguration) {
-        this.mqttConfiguration = mqttConfiguration;
+    public void setMqtt(MqttConfiguration mqttConfiguration) {
+        this.mqtt = mqttConfiguration;
     }
 }

@@ -2,7 +2,6 @@ package br.com.gabrielmalakias.serial;
 
 import gnu.io.SerialPort;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -10,17 +9,31 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 @Component
-@Scope("singleton")
 public class Bridge {
-    private final SerialPort serialPort;
-    private final PortFactory factory;
-    private final InputStream inputStream;
-    private final OutputStream outputStream;
+    private final SerialPort serial;
 
     @Autowired
-    public Bridge(PortFactory factory) {
-        this.factory = factory;
-        this.serialPort = factory.build();
+    public Bridge(SerialPort serial) {
+        this.serial = serial;
+    }
+
+
+    public OutputStream getOutputStream() {
+        try {
+            return serial.getOutputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public InputStream getInputStream() {
+        try {
+            return serial.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
    /*

@@ -1,6 +1,6 @@
 package br.com.gabrielmalakias.mqtt;
 
-import br.com.gabrielmalakias.serial.Bridge;
+import br.com.gabrielmalakias.serial.OutputFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.messaging.Message;
@@ -13,8 +13,14 @@ import static br.com.gabrielmalakias.util.Optional.optional;
 @Component
 public class IncomingMessageHandler implements MessageHandler {
 
+    private final OutputFlow outputFlow;
+    private final ConversionService converter;
+
     @Autowired
-    private ConversionService converter;
+    public IncomingMessageHandler(OutputFlow outputFlow, ConversionService converter) {
+        this.converter = converter;
+        this.outputFlow = outputFlow;
+    }
 
     @Override
     public void handleMessage(Message<?> message) throws MessagingException {
@@ -29,9 +35,7 @@ public class IncomingMessageHandler implements MessageHandler {
     }
 
     private boolean send(String message) {
-        return Bridge.getInstance()
-                .map(bridge -> bridge.writeOnOutputStream(message))
-                .orElse(false);
+        return outputFlow.write(message);
     }
 
     private String toSerial(MqttMessage mqttMessage) {
