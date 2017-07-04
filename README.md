@@ -1,13 +1,8 @@
 # Bitfrost
 
-```
-██████╗ ██╗████████╗███████╗██████╗  ██████╗ ███████╗████████╗
-██╔══██╗██║╚══██╔══╝██╔════╝██╔══██╗██╔═══██╗██╔════╝╚══██╔══╝
-██████╔╝██║   ██║   █████╗  ██████╔╝██║   ██║███████╗   ██║
-██╔══██╗██║   ██║   ██╔══╝  ██╔══██╗██║   ██║╚════██║   ██║
-██████╔╝██║   ██║   ██║     ██║  ██║╚██████╔╝███████║   ██║
-╚═════╝ ╚═╝   ╚═╝   ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝
-```
+
+![Bitfrost](http://gabrielmalakias.com.br/assets/images/bitfrost_logo_white.png "Bitfrost Logo")
+
 
 > Bifrost is the rainbow bridge that connects Asgard, the world of the Aesir tribe of gods, with Midgard, the world of humanity - Norse-Mythology.org
 
